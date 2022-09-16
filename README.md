@@ -1,4 +1,4 @@
-# @opi-pib/node-translate
+# @opi_pib/node-translate
 
 Helper tool for generating translation files that works with ngx-translate
 
