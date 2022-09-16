@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import { writeFileSync } from 'fs-extra';
-import { Maybe } from '@opi-pib/ts-utility';
-import { Notify } from '@opi-pib/node-utility';
+import { Maybe } from '@opi_pib/ts-utility';
+import { Notify } from '@opi_pib/node-utility';
 
 import { TranslationsExtractorProps } from '../../models/translations-extractor-props';
 import { TranslationsIdentifiers } from '../translations-identifiers/translations-identifiers';

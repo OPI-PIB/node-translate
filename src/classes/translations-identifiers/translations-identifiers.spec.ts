@@ -1,4 +1,4 @@
-import { Maybe } from '@opi-pib/ts-utility';
+import { Maybe } from '@opi_pib/ts-utility';
 
 import { TranslationsIdentifiers } from './translations-identifiers';
 

@@ -1,4 +1,4 @@
-import { Notify } from '@opi-pib/node-utility';
+import { Notify } from '@opi_pib/node-utility';
 import { ensureDirSync } from 'fs-extra';
 
 import { TranslationsExtractor } from '../classes/translations-extractor/translations-extractor';

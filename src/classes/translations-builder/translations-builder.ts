@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { readFileSync } from 'fs-extra';
-import { Maybe } from '@opi-pib/ts-utility';
+import { Maybe } from '@opi_pib/ts-utility';
 
 import { TranslationsObject } from '../../models/translations-object';
 
