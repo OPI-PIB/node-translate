@@ -56,6 +56,7 @@ describe('TranslationsExtractor', () => {
 				outputTranslationKeyTypeFile: tmpOutputTranslationKeyTypeFile,
 				outputMarkerFile: tmpOutputMarkerFile,
 				langs: ['pl', 'en'],
+				reportDuplicates: true,
 			});
 			translationsExtractor.extract();
 		});
@@ -104,6 +105,7 @@ describe('TranslationsExtractor', () => {
 				outputTranslationKeyTypeFile: tmpOutputTranslationKeyTypeFile,
 				outputMarkerFile: tmpOutputMarkerFile,
 				langs: ['pl', 'en'],
+				reportDuplicates: true,
 			});
 			translationsExtractor.extract();
 		});

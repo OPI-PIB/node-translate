@@ -14,17 +14,16 @@ export class TranslationsExtractor {
 	translationsBuilder: TranslationsBuilder;
 
 	constructor(private props: TranslationsExtractorProps) {
-		this.props = props;
 		this.translationsIdentifiers = new TranslationsIdentifiers();
 		this.translationsBuilder = new TranslationsBuilder();
 	}
 
 	extract(): void {
 		const newIdentifiers: string[] = this.translationsIdentifiers.getNewIdentifiers(this.props.inputPath);
-		this.saveTranslations(this.props.langs, this.translationsIdentifiers.toObject(newIdentifiers));
+		this.saveTranslations(this.props.langs, this.translationsIdentifiers.toObject(newIdentifiers), this.props.reportDuplicates);
 	}
 
-	private saveTranslations(langs: string[], translations: TranslationsObject): void {
+	private saveTranslations(langs: string[], translations: TranslationsObject, reportDuplicates: boolean): void {
 		R.forEach((lang) => {
 			const fileForTheTranslatorName = `${this.props.outputTranslatorPath}${lang}.json`;
 			const fileForAppName = `${this.props.outputAppPath}${lang}.json`;
@@ -38,8 +37,12 @@ export class TranslationsExtractor {
 				newTranslations = this.translationsBuilder.mergeOldTranslations(newTranslations, oldTranslations);
 			}
 
-			if (lang === 'pl') {
+			if (lang === langs[0]) {
 				this.buildInterface(newTranslations);
+
+				if (reportDuplicates === true) {
+					this.reportDuplicatedValues(newTranslations);
+				}
 			}
 
 			this.writeFile(fileForTheTranslatorName, newTranslations, true);
@@ -115,6 +118,17 @@ export function t(key: TranslationKey): TranslationKey {
 			if (error instanceof Error) {
 				Notify.error({ message: `Can't save file: ${this.props.outputMarkerFile}`, error });
 			}
+		}
+	}
+
+	private reportDuplicatedValues(translations: TranslationsObject): void {
+		const duplicates = this.translationsBuilder.findDuplicatedValues(translations);
+		const duplicatesKeys = R.keys(duplicates);
+
+		if (duplicatesKeys.length > 0) {
+			Notify.info({ message: 'Translation duplicates in primary language:' });
+
+			duplicatesKeys.forEach((key) => Notify.info({ message: `${duplicates[key]}x: ${key}` }));
 		}
 	}
 }

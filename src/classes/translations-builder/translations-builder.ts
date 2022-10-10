@@ -43,4 +43,8 @@ export class TranslationsBuilder {
 
 		return translationsObject;
 	}
+
+	findDuplicatedValues(translations: TranslationsObject): Record<string, number> {
+		return R.pickBy((value, key) => value > 1, R.countBy((r) => r, R.values(translations)));
+	}
 }

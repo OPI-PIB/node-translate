@@ -6,4 +6,5 @@ export interface TranslationsExtractorProps {
 	outputMarkerFile: string;
 	outputAppPath: string;
 	langs: string[];
+	reportDuplicates: boolean;
 }
