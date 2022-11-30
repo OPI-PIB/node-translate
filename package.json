@@ -1,6 +1,6 @@
 {
 	"name": "@opi_pib/node-translate",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"description": "Translation tools",
 	"main": "dist/cli.js",
 	"types": "dist/cli.d.ts",
@@ -21,7 +21,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@opi_pib/node-utility": "^1.0.5",
-		"@opi_pib/ts-utility": "^1.1.0",
+		"@opi_pib/ts-utility": "^1.1.2",
 		"fs-extra": "^11.1.0",
 		"glob": "^8.0.3",
 		"ramda": "^0.28.0",
