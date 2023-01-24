@@ -2,6 +2,17 @@
 
 Helper tool for generating translation files that works with ngx-translate
 
+-   [Install](#install)
+-   [Generate translations](#generate-translations)
+-   [Define translation keys](#define-translation-keys)
+-   [Default config](#default-config)
+
+## Install
+
+```
+npm install @opi_pib/node-translate
+```
+
 ## Generate translations
 
 Find all translation keys in 'app' and 'domain' folders and generate translation files
