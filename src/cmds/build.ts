@@ -36,6 +36,7 @@ exports.handler = (argv: any) => {
 		outputInterfaceFile: `${argv.dist}/translations.ts`,
 		outputTranslationKeyTypeFile: `${argv.dist}/translation-key.ts`,
 		outputMarkerFile: `${argv.dist}/translation-marker.ts`,
+		outputLanguagesFile: `${argv.dist}/translation-languages.ts`,
 		langs: argv.langs,
 		reportDuplicates: argv.reportDuplicates,
 	};
@@ -45,7 +46,7 @@ exports.handler = (argv: any) => {
 	});
 
 	try {
-		translationsExtractor.extract();
+		translationsExtractor.extract(argv);
 	} catch (error) {
 		if (error instanceof Error) {
 			Notify.error({ message: 'Error', error });

@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { writeFileSync } from 'fs-extra';
-import { Maybe } from '@opi_pib/ts-utility';
+import { always, Is, Maybe } from '@opi_pib/ts-utility';
 import { Notify } from '@opi_pib/node-utility';
 
 import { TranslationsExtractorProps } from '../../models/translations-extractor-props';
@@ -18,9 +18,14 @@ export class TranslationsExtractor {
 		this.translationsBuilder = new TranslationsBuilder();
 	}
 
-	extract(): void {
-		const newIdentifiers: string[] = this.translationsIdentifiers.getNewIdentifiers(this.props.inputPath);
-		this.saveTranslations(this.props.langs, this.translationsIdentifiers.toObject(newIdentifiers), this.props.reportDuplicates);
+	extract(args: any): void {
+		try {
+			const newIdentifiers: string[] = this.translationsIdentifiers.getNewIdentifiers(this.props.inputPath);
+			this.saveTranslations(this.props.langs, this.translationsIdentifiers.toObject(newIdentifiers), this.props.reportDuplicates);
+			this.saveLanguageEnum(args.langs);
+
+			Notify.success({ message: 'Translations generated' });
+		} catch {}
 	}
 
 	private saveTranslations(langs: string[], translations: TranslationsObject, reportDuplicates: boolean): void {
@@ -48,8 +53,6 @@ export class TranslationsExtractor {
 			this.writeFile(fileForTheTranslatorName, newTranslations, true);
 			this.writeFile(fileForAppName, this.translationsBuilder.removeKeysWithEmptyString(newTranslations));
 		}, langs);
-
-		Notify.success({ message: 'Translations generated' });
 	}
 
 	private writeFile(name: string, translation: TranslationsObject, format = false): void {
@@ -129,6 +132,30 @@ export function t(key: TranslationKey): TranslationKey {
 			Notify.info({ message: 'Translation duplicates in primary language:' });
 
 			duplicatesKeys.forEach((key) => Notify.info({ message: `${duplicates[key]}x: ${key}` }));
+		}
+	}
+
+	private saveLanguageEnum(langs: string[]): void {
+		always(Is.array(langs), 'provide langs array');
+		always(langs.length > 0, 'provide at least one lang');
+
+		try {
+			writeFileSync(
+				this.props.outputLanguagesFile,
+				`export type TranslationLanguageEnum =
+	${langs.map((lang) => `| '${lang}'`).join('\n\t')};
+
+export const languages: TranslationLanguageEnum[] = [${langs.map((lang) => `'${lang}'`)}];
+
+export const isTranslationLanguageEnum = (value: unknown): value is TranslationLanguageEnum =>
+	languages.includes(value as TranslationLanguageEnum);
+`,
+			);
+			Notify.info({ message: `Saved file: ${this.props.outputLanguagesFile}` });
+		} catch (error) {
+			if (error instanceof Error) {
+				Notify.error({ message: `Can't save file: ${this.props.outputLanguagesFile}`, error });
+			}
 		}
 	}
 }
