@@ -57,12 +57,10 @@ Every translation key needs to match RegExp which means also that it needs to be
 
 ```json
 {
-	"inputPath": "./src/app/**/*+(.ts|.html)",
-	"outputTranslatorPath": "./src/translations/for-the-translator/",
-	"outputAppPath": "./src/assets/i18n/",
-	"outputInterfaceFile": "./src/translations/translations.ts",
-	"outputTranslationKeyTypeFile": "./src/translations/translation-key.ts",
-	"outputMarkerFile": "./src/translations/translation-marker.ts",
-	"langs": ["pl"]
+	"source": "./src/app/**/*+(.ts|.html)",
+	"dist": "./src/translations",
+	"i18n": "./src/assets/i18n",
+	"langs": ["pl"],
+	"reportDuplicates": true
 }
 ```
