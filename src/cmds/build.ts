@@ -15,7 +15,7 @@ exports.builder = {
 		default: './src/translations',
 	},
 	i18n: {
-		default: './src/assets/i18n/',
+		default: './src/assets/i18n',
 	},
 	langs: {
 		default: ['pl'],
@@ -29,10 +29,12 @@ exports.handler = (argv: any) => {
 	ensureDirSync(`${argv.dist}/for-the-translator/`);
 	ensureDirSync(argv.i18n);
 
-	const options: Omit<TranslationsExtractorProps, 'reportDuplicates'> & { reportDuplicates: string } = {
+	const options: Omit<TranslationsExtractorProps, 'reportDuplicates'> & {
+		reportDuplicates: string;
+	} = {
 		inputPath: argv.source,
 		outputTranslatorPath: `${argv.dist}/for-the-translator/`,
-		outputAppPath: argv.i18n,
+		outputAppPath: `${argv.i18n}/`,
 		outputInterfaceFile: `${argv.dist}/translations.ts`,
 		outputTranslationKeyTypeFile: `${argv.dist}/translation-key.ts`,
 		outputMarkerFile: `${argv.dist}/translation-marker.ts`,

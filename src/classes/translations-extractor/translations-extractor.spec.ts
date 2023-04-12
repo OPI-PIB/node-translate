@@ -1,5 +1,8 @@
 import {
-	writeFileSync, emptyDirSync, readFileSync, removeSync,
+	writeFileSync,
+	emptyDirSync,
+	readFileSync,
+	removeSync,
 } from 'fs-extra';
 import R from 'ramda';
 
@@ -45,8 +48,12 @@ describe('TranslationsExtractor', () => {
 			emptyDirSync(`${tmpTranslatorPath}`);
 			emptyDirSync(`${tmpAppPath}`);
 
-			writeFileSync(`${tmpSrcPath}file.ts`, contentTs, { encoding: 'utf-8' });
-			writeFileSync(`${tmpSrcPath}file.html`, contentHtml, { encoding: 'utf-8' });
+			writeFileSync(`${tmpSrcPath}file.ts`, contentTs, {
+				encoding: 'utf-8',
+			});
+			writeFileSync(`${tmpSrcPath}file.html`, contentHtml, {
+				encoding: 'utf-8',
+			});
 
 			translationsExtractor = new TranslationsExtractor({
 				inputPath: `${tmpSrcPath}/**/*+(.ts|.html)`,
@@ -57,8 +64,11 @@ describe('TranslationsExtractor', () => {
 				outputMarkerFile: tmpOutputMarkerFile,
 				langs: ['pl', 'en'],
 				reportDuplicates: true,
+				outputLanguagesFile: `${tmpSrcPath}/translation-languages.ts`,
 			});
-			translationsExtractor.extract();
+			translationsExtractor.extract({
+				langs: ['pl', 'en'],
+			});
 		});
 
 		afterAll(() => {
@@ -83,8 +93,10 @@ describe('TranslationsExtractor', () => {
 	});
 
 	describe('extract() with old translations', () => {
-		const partialyFilledTranslationPl = '{"A":"test pl","A.B":"b pl","n":"n"}';
-		const partialyFilledTranslationEn = '{"A":"test en","A.B":"b en","n":"n"}';
+		const partialyFilledTranslationPl =
+			'{"A":"test pl","A.B":"b pl","n":"n"}';
+		const partialyFilledTranslationEn =
+			'{"A":"test en","A.B":"b en","n":"n"}';
 
 		beforeAll(() => {
 			emptyDirSync(`${tmpFolderPath}`);
@@ -92,10 +104,26 @@ describe('TranslationsExtractor', () => {
 			emptyDirSync(`${tmpTranslatorPath}`);
 			emptyDirSync(`${tmpAppPath}`);
 
-			writeFileSync(`${tmpSrcPath}file.ts`, contentTs, { encoding: 'utf-8' });
-			writeFileSync(`${tmpSrcPath}file.html`, contentHtml, { encoding: 'utf-8' });
-			writeFileSync(`${tmpTranslatorPath}pl.json`, partialyFilledTranslationPl, { encoding: 'utf-8' });
-			writeFileSync(`${tmpTranslatorPath}en.json`, partialyFilledTranslationEn, { encoding: 'utf-8' });
+			writeFileSync(`${tmpSrcPath}file.ts`, contentTs, {
+				encoding: 'utf-8',
+			});
+			writeFileSync(`${tmpSrcPath}file.html`, contentHtml, {
+				encoding: 'utf-8',
+			});
+			writeFileSync(
+				`${tmpTranslatorPath}pl.json`,
+				partialyFilledTranslationPl,
+				{
+					encoding: 'utf-8',
+				}
+			);
+			writeFileSync(
+				`${tmpTranslatorPath}en.json`,
+				partialyFilledTranslationEn,
+				{
+					encoding: 'utf-8',
+				}
+			);
 
 			translationsExtractor = new TranslationsExtractor({
 				inputPath: `${tmpSrcPath}/**/*+(.ts|.html)`,
@@ -106,8 +134,11 @@ describe('TranslationsExtractor', () => {
 				outputMarkerFile: tmpOutputMarkerFile,
 				langs: ['pl', 'en'],
 				reportDuplicates: true,
+				outputLanguagesFile: `${tmpSrcPath}/translation-languages.ts`,
 			});
-			translationsExtractor.extract();
+			translationsExtractor.extract({
+				langs: ['pl', 'en'],
+			});
 		});
 
 		afterAll(() => {
