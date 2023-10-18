@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { readFileSync } from 'fs-extra';
-import { sync } from 'glob';
+import { sync } from 'fast-glob';
 
 import { TranslationsObject } from '../../models/translations-object';
 

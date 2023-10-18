@@ -22,9 +22,9 @@ export class TranslationsBuilder {
 	}
 
 	private removeUnusedKeys(oldTranslation: TranslationsObject, newTranslation: TranslationsObject): TranslationsObject {
-		const newKeys: string[] = R.keys(newTranslation) as string[];
+		const newKeys = R.keys(newTranslation);
 
-		return R.pick(newKeys, oldTranslation);
+		return R.pick(newKeys as any, oldTranslation);
 	}
 
 	getOldTranslationObject(lang: string, outputTranslatorPath: string): Maybe<TranslationsObject> {
