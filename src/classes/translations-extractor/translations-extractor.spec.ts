@@ -1,9 +1,4 @@
-import {
-	writeFileSync,
-	emptyDirSync,
-	readFileSync,
-	removeSync,
-} from 'fs-extra';
+import { writeFileSync, emptyDirSync, readFileSync, removeSync } from 'fs-extra';
 import R from 'ramda';
 
 import { TranslationsExtractor } from './translations-extractor';
@@ -93,10 +88,8 @@ describe('TranslationsExtractor', () => {
 	});
 
 	describe('extract() with old translations', () => {
-		const partialyFilledTranslationPl =
-			'{"A":"test pl","A.B":"b pl","n":"n"}';
-		const partialyFilledTranslationEn =
-			'{"A":"test en","A.B":"b en","n":"n"}';
+		const partialyFilledTranslationPl = '{"A":"test pl","A.B":"b pl","n":"n"}';
+		const partialyFilledTranslationEn = '{"A":"test en","A.B":"b en","n":"n"}';
 
 		beforeAll(() => {
 			emptyDirSync(`${tmpFolderPath}`);
@@ -110,20 +103,12 @@ describe('TranslationsExtractor', () => {
 			writeFileSync(`${tmpSrcPath}file.html`, contentHtml, {
 				encoding: 'utf-8',
 			});
-			writeFileSync(
-				`${tmpTranslatorPath}pl.json`,
-				partialyFilledTranslationPl,
-				{
-					encoding: 'utf-8',
-				}
-			);
-			writeFileSync(
-				`${tmpTranslatorPath}en.json`,
-				partialyFilledTranslationEn,
-				{
-					encoding: 'utf-8',
-				}
-			);
+			writeFileSync(`${tmpTranslatorPath}pl.json`, partialyFilledTranslationPl, {
+				encoding: 'utf-8',
+			});
+			writeFileSync(`${tmpTranslatorPath}en.json`, partialyFilledTranslationEn, {
+				encoding: 'utf-8',
+			});
 
 			translationsExtractor = new TranslationsExtractor({
 				inputPath: `${tmpSrcPath}/**/*+(.ts|.html)`,

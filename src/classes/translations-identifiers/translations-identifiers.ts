@@ -35,7 +35,7 @@ export class TranslationsIdentifiers {
 		return R.pipe(
 			// eslint-disable-next-line no-useless-escape
 			R.match(/[\(\s\.]{1}(?:t|translate\$|instant)\((?:\s*[\'\"]{1}(\w+(:?.\w+)*)[\'\"]{1})/gm),
-			R.map(R.pipe(R.match(/\w+(:?.\w+)*/g), R.last)),
+			R.map(R.pipe(R.match(/\w+(:?.\w+)*/g), R.last))
 		)(content) as string[];
 	}
 
@@ -43,7 +43,7 @@ export class TranslationsIdentifiers {
 		return R.pipe(
 			// eslint-disable-next-line no-useless-escape
 			R.match(/[\'\"]{1}(\w+(?:\.\w+)*){1}[\'\"]{1}\s+(?:\|\s+.+\s+)*?\|\s+translate/gm),
-			R.map(R.pipe(R.match(/\w+(?:.\w+)*/g), R.head)),
+			R.map(R.pipe(R.match(/\w+(?:.\w+)*/g), R.head))
 		)(content) as string[];
 	}
 
@@ -54,7 +54,7 @@ export class TranslationsIdentifiers {
 				[identifier]: '',
 			}),
 			{},
-			identifiers,
+			identifiers
 		);
 	}
 }

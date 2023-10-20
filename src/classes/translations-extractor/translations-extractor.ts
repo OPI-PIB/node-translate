@@ -20,39 +20,23 @@ export class TranslationsExtractor {
 
 	extract(args: any): void {
 		try {
-			const newIdentifiers: string[] =				this.translationsIdentifiers.getNewIdentifiers(
-				this.props.inputPath,
-			);
-			this.saveTranslations(
-				this.props.langs,
-				this.translationsIdentifiers.toObject(newIdentifiers),
-				this.props.reportDuplicates,
-			);
+			const newIdentifiers: string[] = this.translationsIdentifiers.getNewIdentifiers(this.props.inputPath);
+			this.saveTranslations(this.props.langs, this.translationsIdentifiers.toObject(newIdentifiers), this.props.reportDuplicates);
 			this.saveLanguageEnum(args.langs);
 
 			Notify.success({ message: 'Translations generated' });
 		} catch {}
 	}
 
-	private saveTranslations(
-		langs: string[],
-		translations: TranslationsObject,
-		reportDuplicates: boolean,
-	): void {
+	private saveTranslations(langs: string[], translations: TranslationsObject, reportDuplicates: boolean): void {
 		R.forEach((lang: string) => {
 			const fileForTheTranslatorName = `${this.props.outputTranslatorPath}${lang}.json`;
 			const fileForAppName = `${this.props.outputAppPath}${lang}.json`;
-			const oldTranslations: Maybe<TranslationsObject> =				this.translationsBuilder.getOldTranslationObject(
-				lang,
-				this.props.outputTranslatorPath,
-			);
+			const oldTranslations: Maybe<TranslationsObject> = this.translationsBuilder.getOldTranslationObject(lang, this.props.outputTranslatorPath);
 			let newTranslations: TranslationsObject = R.clone(translations);
 
 			if (oldTranslations && R.is(Object, oldTranslations)) {
-				newTranslations = this.translationsBuilder.mergeOldTranslations(
-					newTranslations,
-					oldTranslations,
-				);
+				newTranslations = this.translationsBuilder.mergeOldTranslations(newTranslations, oldTranslations);
 			}
 
 			if (lang === langs[0]) {
@@ -64,30 +48,13 @@ export class TranslationsExtractor {
 			}
 
 			this.writeFile(fileForTheTranslatorName, newTranslations, true);
-			this.writeFile(
-				fileForAppName,
-				this.translationsBuilder.removeKeysWithEmptyString(
-					newTranslations,
-				),
-			);
+			this.writeFile(fileForAppName, this.translationsBuilder.removeKeysWithEmptyString(newTranslations));
 		}, langs);
 	}
 
-	private writeFile(
-		name: string,
-		translation: TranslationsObject,
-		format = false,
-	): void {
+	private writeFile(name: string, translation: TranslationsObject, format = false): void {
 		try {
-			writeFileSync(
-				name,
-				`${JSON.stringify(
-					translation,
-					null,
-					format ? '\t' : undefined,
-				)}\n`,
-				'utf8',
-			);
+			writeFileSync(name, `${JSON.stringify(translation, null, format ? '\t' : undefined)}\n`, 'utf8');
 			Notify.info({ message: `Saved file: ${name}` });
 		} catch (error) {
 			if (error instanceof Error) {
@@ -103,7 +70,7 @@ export class TranslationsExtractor {
 			R.keys,
 			R.forEach((key) => {
 				keys = `${keys}\n\t'${key}': string;`;
-			}),
+			})
 		)(newTranslations);
 
 		this.saveTranslationsInterface(keys);
@@ -113,10 +80,7 @@ export class TranslationsExtractor {
 
 	private saveTranslationsInterface(keys: string): void {
 		try {
-			writeFileSync(
-				this.props.outputInterfaceFile,
-				`export interface Translations {${keys}\n}`,
-			);
+			writeFileSync(this.props.outputInterfaceFile, `export interface Translations {${keys}\n}`);
 			Notify.info({
 				message: `Saved file: ${this.props.outputInterfaceFile}`,
 			});
@@ -135,7 +99,7 @@ export class TranslationsExtractor {
 			writeFileSync(
 				this.props.outputTranslationKeyTypeFile,
 				`import {Translations} from './translations';
-export type TranslationKey = keyof Translations;`,
+export type TranslationKey = keyof Translations;`
 			);
 			Notify.info({
 				message: `Saved file: ${this.props.outputTranslationKeyTypeFile}`,
@@ -157,7 +121,7 @@ export type TranslationKey = keyof Translations;`,
 				`import {TranslationKey} from './translation-key';
 export function t(key: TranslationKey): TranslationKey {
 	return key;
-}`,
+}`
 			);
 			Notify.info({
 				message: `Saved file: ${this.props.outputMarkerFile}`,
@@ -173,7 +137,7 @@ export function t(key: TranslationKey): TranslationKey {
 	}
 
 	private reportDuplicatedValues(translations: TranslationsObject): void {
-		const duplicates =			this.translationsBuilder.findDuplicatedValues(translations);
+		const duplicates = this.translationsBuilder.findDuplicatedValues(translations);
 		const duplicatesKeys = R.keys(duplicates);
 
 		if (duplicatesKeys.length > 0) {
@@ -181,8 +145,7 @@ export function t(key: TranslationKey): TranslationKey {
 				message: 'Translation duplicates in primary language:',
 			});
 
-			duplicatesKeys.forEach((key) =>
-				Notify.info({ message: `${duplicates[key]}x: ${key}` }));
+			duplicatesKeys.forEach((key) => Notify.info({ message: `${duplicates[key]}x: ${key}` }));
 		}
 	}
 
@@ -196,13 +159,11 @@ export function t(key: TranslationKey): TranslationKey {
 				`export type TranslationLanguageEnum =
 	${langs.map((lang) => `| '${lang}'`).join('\n\t')};
 
-export const languages: TranslationLanguageEnum[] = [${langs.map(
-		(lang) => `'${lang}'`,
-	)}];
+export const languages: TranslationLanguageEnum[] = [${langs.map((lang) => `'${lang}'`)}];
 
 export const isTranslationLanguageEnum = (value: unknown): value is TranslationLanguageEnum =>
 	languages.includes(value as TranslationLanguageEnum);
-`,
+`
 			);
 			Notify.info({
 				message: `Saved file: ${this.props.outputLanguagesFile}`,
