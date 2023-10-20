@@ -104,7 +104,6 @@ describe('TranslationsIdentifiers', () => {
 			});
 
 			it('should find one marker in template strings with translate$ formatted', () => {
-				// eslint-disable-next-line no-template-curly-in-string
 				const content = `this.service.translate$(
 					'A.B'
 				);
@@ -222,9 +221,7 @@ describe('TranslationsIdentifiers', () => {
 			const identifiers = ['A', 'B.B', 'C.C.C'];
 			const stringifiedResult = '{"A":"","B.B":"","C.C.C":""}';
 
-			const result = translationsIdentifiers != null && translationsIdentifiers instanceof TranslationsIdentifiers ?
-				translationsIdentifiers.toObject(identifiers) :
-				null;
+			const result = translationsIdentifiers != null && translationsIdentifiers instanceof TranslationsIdentifiers ? translationsIdentifiers.toObject(identifiers) : null;
 
 			expect(JSON.stringify(result)).toEqual(stringifiedResult);
 		});
