@@ -1,6 +1,6 @@
 {
 	"name": "@opi_pib/node-translate",
-	"version": "2.2.0",
+	"version": "2.2.1",
 	"description": "Translation tools",
 	"main": "dist/cli.js",
 	"types": "dist/cli.d.ts",
@@ -25,7 +25,7 @@
 		"fast-glob": "^3.0.0",
 		"fs-extra": "^11.0.0",
 		"ramda": "^0.31.0",
-		"yargs": "^18.0.0"
+		"yargs": "^17.0.0"
 	},
 	"devDependencies": {
 		"@opi_pib/eslint-config-base": "^9.0.0",
