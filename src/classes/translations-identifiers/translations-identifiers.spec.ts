@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Maybe } from '@opi_pib/ts-utility';
 
 import { TranslationsIdentifiers } from './translations-identifiers';
@@ -97,7 +100,6 @@ describe('TranslationsIdentifiers', () => {
 			});
 
 			it('should find one marker in template strings with translate$', () => {
-				// eslint-disable-next-line no-template-curly-in-string
 				const content = "this.get1(`${this.service.translate$('A.B')}`));";
 
 				expect((translationsIdentifiers as any).findMarkers(content)).toEqual(['A.B']);
@@ -117,14 +119,12 @@ describe('TranslationsIdentifiers', () => {
 			});
 
 			it('should find one marker in template strings with instant', () => {
-				// eslint-disable-next-line no-template-curly-in-string
 				const content = "this.get1(`${this.service.instant('A.B')}`))";
 
 				expect((translationsIdentifiers as any).findMarkers(content)).toEqual(['A.B']);
 			});
 
 			it('should find one marker in template strings with instant formatted', () => {
-				// eslint-disable-next-line no-template-curly-in-string
 				const content = `this.service.instant(
 					'A.B'
 				)`;
@@ -133,14 +133,12 @@ describe('TranslationsIdentifiers', () => {
 			});
 
 			it('should find all markers in template strings with translate$', () => {
-				// eslint-disable-next-line no-template-curly-in-string
 				const content = "this.get1(`${this.service.translate$('A.B')}`) this.get1(`${this.service.translate$('C.D')}`)";
 
 				expect((translationsIdentifiers as any).findMarkers(content)).toEqual(['A.B', 'C.D']);
 			});
 
 			it('should find all markers in template strings with instant', () => {
-				// eslint-disable-next-line no-template-curly-in-string
 				const content = "this.get1(`${this.service.instant('A.B')}`) this.get1(`${this.service.instant('C.D')}`)";
 
 				expect((translationsIdentifiers as any).findMarkers(content)).toEqual(['A.B', 'C.D']);
@@ -170,7 +168,18 @@ describe('TranslationsIdentifiers', () => {
 							| translate }}</div>
 			`;
 
-			expect((translationsIdentifiers as any).findPipes(content)).toEqual(['A', 'B.B.A', 'C', 'D.B.B', 'E', 'F', 'G', 'H', 'I', 'J']);
+			expect((translationsIdentifiers as any).findPipes(content)).toEqual([
+				'A',
+				'B.B.A',
+				'C',
+				'D.B.B',
+				'E',
+				'F',
+				'G',
+				'H',
+				'I',
+				'J'
+			]);
 		});
 
 		it('should find all pipes in template parsed inputs', () => {
@@ -191,7 +200,18 @@ describe('TranslationsIdentifiers', () => {
 								| translate"></div>
 			`;
 
-			expect((translationsIdentifiers as any).findPipes(content)).toEqual(['A', 'B', 'C.C.A', 'D', 'E.C.B', 'F', 'G', 'H', 'I', 'J']);
+			expect((translationsIdentifiers as any).findPipes(content)).toEqual([
+				'A',
+				'B',
+				'C.C.A',
+				'D',
+				'E.C.B',
+				'F',
+				'G',
+				'H',
+				'I',
+				'J'
+			]);
 		});
 
 		it('should find all pipes in template inputs', () => {
@@ -212,7 +232,18 @@ describe('TranslationsIdentifiers', () => {
 								| translate }}"></div>
 			`;
 
-			expect((translationsIdentifiers as any).findPipes(content)).toEqual(['A', 'B.D.A', 'C', 'D', 'E', 'F', 'G.D.B', 'H.D.E', 'I', 'J']);
+			expect((translationsIdentifiers as any).findPipes(content)).toEqual([
+				'A',
+				'B.D.A',
+				'C',
+				'D',
+				'E',
+				'F',
+				'G.D.B',
+				'H.D.E',
+				'I',
+				'J'
+			]);
 		});
 	});
 
@@ -221,7 +252,10 @@ describe('TranslationsIdentifiers', () => {
 			const identifiers = ['A', 'B.B', 'C.C.C'];
 			const stringifiedResult = '{"A":"","B.B":"","C.C.C":""}';
 
-			const result = translationsIdentifiers != null && translationsIdentifiers instanceof TranslationsIdentifiers ? translationsIdentifiers.toObject(identifiers) : null;
+			const result =
+				translationsIdentifiers != null && translationsIdentifiers instanceof TranslationsIdentifiers
+					? translationsIdentifiers.toObject(identifiers)
+					: null;
 
 			expect(JSON.stringify(result)).toEqual(stringifiedResult);
 		});

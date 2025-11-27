@@ -1,6 +1,7 @@
-import * as R from 'ramda';
-import { readFileSync } from 'fs-extra';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Maybe } from '@opi_pib/ts-utility';
+import { readFileSync } from 'fs-extra';
+import * as R from 'ramda';
 
 import { TranslationsObject } from '../../models/translations-object';
 
@@ -24,7 +25,7 @@ export class TranslationsBuilder {
 	private removeUnusedKeys(oldTranslation: TranslationsObject, newTranslation: TranslationsObject): TranslationsObject {
 		const newKeys = R.keys(newTranslation);
 
-		return R.pick(newKeys as any, oldTranslation);
+		return R.pick(newKeys, oldTranslation);
 	}
 
 	getOldTranslationObject(lang: string, outputTranslatorPath: string): Maybe<TranslationsObject> {
@@ -33,7 +34,7 @@ export class TranslationsBuilder {
 
 		try {
 			content = readFileSync(`${outputTranslatorPath}${lang}.json`, 'utf8');
-		} catch (e) {
+		} catch {
 			return translationsObject;
 		}
 
@@ -46,7 +47,7 @@ export class TranslationsBuilder {
 
 	findDuplicatedValues(translations: TranslationsObject): Record<string, number> {
 		return R.pickBy(
-			(value, key) => value > 1,
+			(value) => value > 1,
 			R.countBy((r) => r, R.values(translations))
 		);
 	}

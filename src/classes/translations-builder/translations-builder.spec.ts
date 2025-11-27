@@ -11,7 +11,7 @@ describe('TranslationsBuilder', () => {
 		const result = translationsBuilder.findDuplicatedValues({
 			'a.a': 'a',
 			'a.b': 'b',
-			'a.c': 'a',
+			'a.c': 'a'
 		});
 
 		expect(result).toEqual({ a: 2 });
