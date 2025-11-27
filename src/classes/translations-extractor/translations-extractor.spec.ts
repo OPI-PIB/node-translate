@@ -1,9 +1,9 @@
-import { writeFileSync, emptyDirSync, readFileSync, removeSync } from 'fs-extra';
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+import { emptyDirSync, readFileSync, removeSync, writeFileSync } from 'fs-extra';
 import R from 'ramda';
 
 import { TranslationsExtractor } from './translations-extractor';
 
-// eslint-disable-next-line no-template-curly-in-string
 const contentTs = `[t(
 	'A'
 ), at('B')]; prop = { a: t('A.B'), b: at('C')}; this.get1(t('D')); this.get1(service.translate$(
@@ -44,10 +44,10 @@ describe('TranslationsExtractor', () => {
 			emptyDirSync(`${tmpAppPath}`);
 
 			writeFileSync(`${tmpSrcPath}file.ts`, contentTs, {
-				encoding: 'utf-8',
+				encoding: 'utf-8'
 			});
 			writeFileSync(`${tmpSrcPath}file.html`, contentHtml, {
-				encoding: 'utf-8',
+				encoding: 'utf-8'
 			});
 
 			translationsExtractor = new TranslationsExtractor({
@@ -59,10 +59,10 @@ describe('TranslationsExtractor', () => {
 				outputMarkerFile: tmpOutputMarkerFile,
 				langs: ['pl', 'en'],
 				reportDuplicates: true,
-				outputLanguagesFile: `${tmpSrcPath}/translation-languages.ts`,
+				outputLanguagesFile: `${tmpSrcPath}/translation-languages.ts`
 			});
 			translationsExtractor.extract({
-				langs: ['pl', 'en'],
+				langs: ['pl', 'en']
 			});
 		});
 
@@ -98,16 +98,16 @@ describe('TranslationsExtractor', () => {
 			emptyDirSync(`${tmpAppPath}`);
 
 			writeFileSync(`${tmpSrcPath}file.ts`, contentTs, {
-				encoding: 'utf-8',
+				encoding: 'utf-8'
 			});
 			writeFileSync(`${tmpSrcPath}file.html`, contentHtml, {
-				encoding: 'utf-8',
+				encoding: 'utf-8'
 			});
 			writeFileSync(`${tmpTranslatorPath}pl.json`, partialyFilledTranslationPl, {
-				encoding: 'utf-8',
+				encoding: 'utf-8'
 			});
 			writeFileSync(`${tmpTranslatorPath}en.json`, partialyFilledTranslationEn, {
-				encoding: 'utf-8',
+				encoding: 'utf-8'
 			});
 
 			translationsExtractor = new TranslationsExtractor({
@@ -119,10 +119,10 @@ describe('TranslationsExtractor', () => {
 				outputMarkerFile: tmpOutputMarkerFile,
 				langs: ['pl', 'en'],
 				reportDuplicates: true,
-				outputLanguagesFile: `${tmpSrcPath}/translation-languages.ts`,
+				outputLanguagesFile: `${tmpSrcPath}/translation-languages.ts`
 			});
 			translationsExtractor.extract({
-				langs: ['pl', 'en'],
+				langs: ['pl', 'en']
 			});
 		});
 

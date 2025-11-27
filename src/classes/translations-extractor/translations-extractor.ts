@@ -1,12 +1,15 @@
-import * as R from 'ramda';
-import { writeFileSync } from 'fs-extra';
-import { always, Is, Maybe } from '@opi_pib/ts-utility';
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Notify } from '@opi_pib/node-utility';
+import { always, Is, Maybe } from '@opi_pib/ts-utility';
+import { writeFileSync } from 'fs-extra';
+import * as R from 'ramda';
 
 import { TranslationsExtractorProps } from '../../models/translations-extractor-props';
-import { TranslationsIdentifiers } from '../translations-identifiers/translations-identifiers';
-import { TranslationsBuilder } from '../translations-builder/translations-builder';
 import { TranslationsObject } from '../../models/translations-object';
+import { TranslationsBuilder } from '../translations-builder/translations-builder';
+import { TranslationsIdentifiers } from '../translations-identifiers/translations-identifiers';
 
 export class TranslationsExtractor {
 	translationsIdentifiers: TranslationsIdentifiers;
@@ -21,10 +24,15 @@ export class TranslationsExtractor {
 	extract(args: any): void {
 		try {
 			const newIdentifiers: string[] = this.translationsIdentifiers.getNewIdentifiers(this.props.inputPath);
-			this.saveTranslations(this.props.langs, this.translationsIdentifiers.toObject(newIdentifiers), this.props.reportDuplicates);
+			this.saveTranslations(
+				this.props.langs,
+				this.translationsIdentifiers.toObject(newIdentifiers),
+				this.props.reportDuplicates
+			);
 			this.saveLanguageEnum(args.langs);
 
 			Notify.success({ message: 'Translations generated' });
+			// eslint-disable-next-line no-empty
 		} catch {}
 	}
 
@@ -32,7 +40,10 @@ export class TranslationsExtractor {
 		R.forEach((lang: string) => {
 			const fileForTheTranslatorName = `${this.props.outputTranslatorPath}${lang}.json`;
 			const fileForAppName = `${this.props.outputAppPath}${lang}.json`;
-			const oldTranslations: Maybe<TranslationsObject> = this.translationsBuilder.getOldTranslationObject(lang, this.props.outputTranslatorPath);
+			const oldTranslations: Maybe<TranslationsObject> = this.translationsBuilder.getOldTranslationObject(
+				lang,
+				this.props.outputTranslatorPath
+			);
 			let newTranslations: TranslationsObject = R.clone(translations);
 
 			if (oldTranslations && R.is(Object, oldTranslations)) {
@@ -82,13 +93,13 @@ export class TranslationsExtractor {
 		try {
 			writeFileSync(this.props.outputInterfaceFile, `export interface Translations {${keys}\n}`);
 			Notify.info({
-				message: `Saved file: ${this.props.outputInterfaceFile}`,
+				message: `Saved file: ${this.props.outputInterfaceFile}`
 			});
 		} catch (error) {
 			if (error instanceof Error) {
 				Notify.error({
 					message: `Can't save file: ${this.props.outputInterfaceFile}`,
-					error,
+					error
 				});
 			}
 		}
@@ -102,13 +113,13 @@ export class TranslationsExtractor {
 export type TranslationKey = keyof Translations;`
 			);
 			Notify.info({
-				message: `Saved file: ${this.props.outputTranslationKeyTypeFile}`,
+				message: `Saved file: ${this.props.outputTranslationKeyTypeFile}`
 			});
 		} catch (error) {
 			if (error instanceof Error) {
 				Notify.error({
 					message: `Can't save file: ${this.props.outputTranslationKeyTypeFile}`,
-					error,
+					error
 				});
 			}
 		}
@@ -124,13 +135,13 @@ export function t(key: TranslationKey): TranslationKey {
 }`
 			);
 			Notify.info({
-				message: `Saved file: ${this.props.outputMarkerFile}`,
+				message: `Saved file: ${this.props.outputMarkerFile}`
 			});
 		} catch (error) {
 			if (error instanceof Error) {
 				Notify.error({
 					message: `Can't save file: ${this.props.outputMarkerFile}`,
-					error,
+					error
 				});
 			}
 		}
@@ -142,7 +153,7 @@ export function t(key: TranslationKey): TranslationKey {
 
 		if (duplicatesKeys.length > 0) {
 			Notify.info({
-				message: 'Translation duplicates in primary language:',
+				message: 'Translation duplicates in primary language:'
 			});
 
 			duplicatesKeys.forEach((key) => Notify.info({ message: `${duplicates[key]}x: ${key}` }));
@@ -166,13 +177,13 @@ export const isTranslationLanguageEnum = (value: unknown): value is TranslationL
 `
 			);
 			Notify.info({
-				message: `Saved file: ${this.props.outputLanguagesFile}`,
+				message: `Saved file: ${this.props.outputLanguagesFile}`
 			});
 		} catch (error) {
 			if (error instanceof Error) {
 				Notify.error({
 					message: `Can't save file: ${this.props.outputLanguagesFile}`,
-					error,
+					error
 				});
 			}
 		}

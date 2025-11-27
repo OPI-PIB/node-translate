@@ -1,6 +1,7 @@
-import * as R from 'ramda';
-import { readFileSync } from 'fs-extra';
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { sync } from 'fast-glob';
+import { readFileSync } from 'fs-extra';
+import * as R from 'ramda';
 
 import { TranslationsObject } from '../../models/translations-object';
 
@@ -51,7 +52,7 @@ export class TranslationsIdentifiers {
 		return R.reduce(
 			(result, identifier) => ({
 				...result,
-				[identifier]: '',
+				[identifier]: ''
 			}),
 			{},
 			identifiers
